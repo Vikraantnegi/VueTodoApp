@@ -24,7 +24,7 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="todo__actions">
-                    <i @click="editTodo(index)" class="fas fa-pen-square editLogo grow pointer"></i>
+                    <i @click="editTodo(task)" class="fas fa-pen-square editLogo grow pointer"></i>
                     <i @click="deleteTodo(index)" class="fas fa-trash deleteLogo grow pointer"></i>
                 </div>
             </div>
@@ -54,7 +54,6 @@ export default {
     filterVal: '',
     incomplete: 0,
     completed: 0,
-    current: [],
     list: [{
           "id": 1,
           "title":"Learn HTML I",
@@ -120,23 +119,23 @@ export default {
       this.filterVal = val;
     }, 
     changeStatus: function(index){
-      this.current[index].done = !this.current[index-1].done
+      var current = this.list.filter(task => task.done === true)
+      current[index].done = !current[index].done
     },
     deleteTodo: function(index){
-      this.current.splice(index, 1);
+      this.list.splice(index, 1);
     },
-    editTodo: function(){
-
+    editTodo: function(task){
+      this.$router.push({name: 'Add', params: task})
     }
   },
   created(){
-    this.current = this.list
-    this.incomplete = this.current.filter(task => !task.done).length
-    this.completed = this.current.filter(task => task.done).length
+    this.incomplete = this.list.filter(task => !task.done).length
+    this.completed = this.list.filter(task => task.done).length
   },
   updated(){
-    this.incomplete = this.current.filter(task => !task.done).length
-    this.completed = this.current.filter(task => task.done).length
+    this.incomplete = this.list.filter(task => !task.done).length
+    this.completed = this.list.filter(task => task.done).length
   }
 }
 </script>
