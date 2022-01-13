@@ -1,6 +1,6 @@
 <template>
-    <app-nav class="navBar">
-      <router-link class="homeLogo" to="/"><i class="fas fa-list-alt ToDologo"></i> Get It Done!</router-link>
+    <div class="navBar">
+      <router-link class="homeLogo grow" to="/"><i class="fas fa-list-alt ToDologo"></i> Get It Done!</router-link>
       <div class="rightNav">
         <router-link class="addTodo grow" to="/active"><i class="fas fa-plus ADDLogo"></i> Add To-Do!</router-link>
         <div class="user">
@@ -8,7 +8,7 @@
           <div class="username">Vikrant Negi</div>
         </div>
       </div>
-    </app-nav>
+    </div>
 </template>
 
 <script>
@@ -57,14 +57,16 @@
   padding: 12px 20px;
   border-radius: 8px;
 }
-.grow:hover{
-  transition: all .2s ease-in-out;
-  transform: scale(1.1);
-}
 .ADDLogo{
   font-size: 20px;
 }
 .username{
   font-weight: 600;
+}
+</style>
+<style>
+.grow:hover{
+  transition: all .2s ease-in-out;
+  transform: scale(1.1);
 }
 </style>

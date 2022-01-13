@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <NavBar user="Vikrant negi" />
-    <app-view>
+    <div class="viewArea">
       <router-view/>
-    </app-view>
+    </div>
   </div>
 </template>
 
@@ -29,5 +29,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.viewArea{
+  width: 90%;
 }
 </style>
