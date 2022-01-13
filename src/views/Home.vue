@@ -18,21 +18,35 @@
         </div>
       </div>
       <div class="homeContent__tasks">
-        
+        <TodoComponent 
+          v-for="task in list"
+          :key="task.id"
+          :title="task.title"
+          :description="task.description"
+          :done="task.done"
+          :author="task.author"
+          :createdDate="task.createdDate"
+          :finishedDate="task.finishedDate"
+          
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ToDoData from '../assets/todo'
+import TodoComponent from '../components/TodoComponent.vue'
 export default {
   name: 'Home',
   components: {
+    TodoComponent
   },
   data: () => ({
     date: 'January 13, 2022',
     incomplete: 3,
     completed: 3,
+    list: ToDoData,
   }),
   methods: {
     filter: function(val){
@@ -62,7 +76,7 @@ export default {
 }
 .homeContent{
   padding: 20px 0;
-  overflow-y: auto;
+  overflow-x: auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -79,7 +93,15 @@ export default {
 }
 .filterButton{
   padding: 12px 16px;
-  border: 1px solid #FFFFFF;
+  border: 2px solid #FFFFFF;
   border-radius: 8px;
+  font-weight: 600;
+}
+.homeContent__tasks{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 20px 20px;
 }
 </style>
