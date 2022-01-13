@@ -22,9 +22,9 @@ export default {
 #app {
   font-family: 'Poppins', sans-serif;
   background: #141419;
+  border-radius: 32px;
   color: #FFFFFF;
   width: 1100px;
-  height: 80vh;
   margin: 10vh auto;
   display: flex;
   flex-direction: column;

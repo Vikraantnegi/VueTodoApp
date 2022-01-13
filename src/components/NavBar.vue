@@ -2,7 +2,7 @@
     <div class="navBar">
       <router-link class="homeLogo grow" to="/"><i class="fas fa-list-alt ToDologo"></i> Get It Done!</router-link>
       <div class="rightNav">
-        <router-link class="addTodo grow" to="/active"><i class="fas fa-plus ADDLogo"></i> Add To-Do!</router-link>
+        <router-link class="addTodo grow" to="/add"><i class="fas fa-plus ADDLogo"></i> Add To-Do!</router-link>
         <div class="user">
           <i class="fas fa-user-circle userIcon"></i>
           <div class="username">Vikrant Negi</div>
@@ -68,5 +68,8 @@
 .grow:hover{
   transition: all .2s ease-in-out;
   transform: scale(1.1);
+}
+.pointer{
+  cursor: pointer;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div class="add">
     <div class="headAdd">
-      <div class="homeDate">Add To-Do</div>
+      <div class="homeDate">{{ msg }} To-Do</div>
     </div>
     <div class="homeContent">
-      <div class="homeContent__head">New Tasks</div>
+      <div class="homeContent__head">{{ msg }} Tasks</div>
     </div>
     <div class="addForm">
       <div class="TitleForm">
@@ -15,7 +15,7 @@
         <label class="DescriptionLabel">Description </label>
         <textarea v-model="message" class="DescriptionInput" placeholder="Add Description here..." />
       </div>
-      <div class="addTodoButton grow pointer" @click="addTask"><i class="fas fa-plus ADDLogo"></i> Add New Task!</div>
+      <div class="addTodoButton grow pointer" @click="addTask"><i class="fas fa-plus ADDLogo"></i> {{ msg }} New Task!</div>
     </div>
   </div>
 </template>
@@ -27,25 +27,44 @@ export default{
   data: () => ({
     title: '',
     message: '',
+    msg: 'Add',
     list: ToDoData,
   }),
   methods: {
     addTask: function(){
-      if(this.title && this.message){
-        var d = new Date();
-        var object = {
-          "id": ToDoData.length+1,
+      if(this.title && this.message && !Object.keys(this.$route.params).length){
+        let d = new Date();
+        let object = {
+          "id": this.list.length+1,
           "title": this.title,
           "done": false, 
           "description": this.message,
           "author": "Vikrant Negi",
           "createdDate": `${d.getDate() + '/' + d.getMonth()+1 + '/' + d.getFullYear()}`,
         }
-        ToDoData.push(object)
-        this.$router.push({ name: 'Home' })
+        this.list.push(object)
+        let list = {list: this.list}
+        this.$router.push({ name: 'Home', params: list })
         this.title=""
         this.message=""
+      } else if(Object.keys(this.$route.params).length){
+        let object = this.$route.params;
+        object.title = this.title,
+        object.description = this.message;
+        object.done = false;
+        this.list[this.$route.params.id - 1] = object;
+        let list = {list: this.list}
+        this.$router.push({ name: 'Home', params: list })
+        this.title=""
+        this.message="" 
       }
+    }
+  },
+  created(){
+    if(Object.keys(this.$route.params).length){
+      this.title = this.$route.params.title;
+      this.message = this.$route.params.description;
+      this.msg = 'Edit';
     }
   }
 }
