@@ -7,52 +7,137 @@
     <div class="homeContent">
       <div class="homeContent__head">My Tasks</div>
       <div class="homeContent__buttons">
-        <div @click="filter('all')" class="filterButton grow">
+        <div @click="filter('all')" class="filterButton grow pointer">
           All Tasks
         </div>
-        <div @click="filter('incomplete')" class="filterButton grow">
+        <div @click="filter('incomplete')" class="filterButton grow pointer">
           Incomplete Tasks
         </div>
-        <div @click="filter('completed')" class="filterButton grow">
+        <div @click="filter('completed')" class="filterButton grow pointer">
           Completed Tasks
         </div>
       </div>
       <div class="homeContent__tasks">
-        <TodoComponent 
-          v-for="task in list"
-          :key="task.id"
-          :title="task.title"
-          :description="task.description"
-          :done="task.done"
-          :author="task.author"
-          :createdDate="task.createdDate"
-          :finishedDate="task.finishedDate"
-          
-        />
+        <div class="todo" v-for="(task, index) in todosFiltered" :key="task.id">
+            <div class="todo__head">
+                <div @click="changeStatus(index)" v-show="task.done" class="doneIcon grow pointer">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="todo__actions">
+                    <i @click="editTodo(index)" class="fas fa-pen-square editLogo grow pointer"></i>
+                    <i @click="deleteTodo(index)" class="fas fa-trash deleteLogo grow pointer"></i>
+                </div>
+            </div>
+            <div class="todo__title">{{ task.title }}</div>
+            <div class="todo__description">{{ task.description }}</div>
+            <div class="todo__data">
+                <div class="todo__author">{{ task.author }}</div>
+                <div class="todo__date">{{ task.createdDate }}</div>
+            </div>
+            <div class="todo__mark" v-if="!task.done">
+                <input type="checkbox" class="finishCheckbox" v-model="task.done">
+                <label for="checkbox">Mark as Finished</label>
+            </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ToDoData from '../assets/todo'
-import TodoComponent from '../components/TodoComponent.vue'
 export default {
   name: 'Home',
   components: {
-    TodoComponent
   },
   data: () => ({
     date: 'January 13, 2022',
-    incomplete: 3,
-    completed: 3,
-    list: ToDoData,
+    filterVal: '',
+    incomplete: 0,
+    completed: 0,
+    current: [],
+    list: [{
+          "id": 1,
+          "title":"Learn HTML I",
+          "done":true, 
+          "description": "Learn HTML-I till 11th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+          "finishedDate": "11/01/2022",
+      }, {
+          "id": 2,
+          "title":"Learn CSS",
+          "done":true, 
+          "description": "Learn CSS till 12th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+          "finishedDate": "12/01/2022",
+      }, {
+          "id": 3,
+          "title":"Responsive design",
+          "done":false, 
+          "description": "Learn Responsive design till 15th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+      }, {
+          "id": 4,
+          "title":"Learn Git",
+          "done":false, 
+          "description": "Learn Git till 18th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+      }, {
+          "id": 5,
+          "title":"Learn JavaScript I",
+          "done":true, 
+          "description": "Learn JavaScript-I till 13th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+          "finishedDate": "13/01/2022",
+      }, {
+          "id": 6,
+          "title":"Learn JavaScript II",
+          "done":false, 
+          "description": "Learn JavaScript-II till 20th, and then move forward.",
+          "author": "Vikrant Negi",
+          "createdDate": "10/01/2022",
+      },
+    ],
   }),
+  computed: {
+    todosFiltered(){
+      if(this.filterVal === 'all'){
+        return this.list;
+      } else if(this.filterVal === 'incomplete'){
+        return this.list.filter(task => task.done === false)
+      } else if(this.filterVal === 'completed'){
+        return this.list.filter(task => task.done === true)
+      }
+      return this.list
+    },
+  },
   methods: {
     filter: function(val){
-      console.log(val)
+      this.filterVal = val;
+    }, 
+    changeStatus: function(index){
+      this.current[index].done = !this.current[index-1].done
+    },
+    deleteTodo: function(index){
+      this.current.splice(index, 1);
+    },
+    editTodo: function(){
+
     }
   },
+  created(){
+    this.current = this.list
+    this.incomplete = this.current.filter(task => !task.done).length
+    this.completed = this.current.filter(task => task.done).length
+  },
+  updated(){
+    this.incomplete = this.current.filter(task => !task.done).length
+    this.completed = this.current.filter(task => task.done).length
+  }
 }
 </script>
 
@@ -96,12 +181,80 @@ export default {
   border: 2px solid #FFFFFF;
   border-radius: 8px;
   font-weight: 600;
+  text-decoration: none;
+  color: #FFFFFF;
 }
 .homeContent__tasks{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 30px;
-  margin: 20px 20px;
+  margin: 20px 20px 40px 20px;
+}
+.todo{
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    width: 240px;
+    color: #141419;
+    border-radius: 16px;
+    padding: 20px;
+    gap: 5px;
+}
+.todo__head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.doneIcon{
+    color: #00D100;
+    font-size: 20px;
+}
+.todo__actions{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    gap: 5px;
+    align-items: center;
+}
+.editLogo{
+    color: #DD8F0E;
+    font-size: 24px;
+}
+.deleteLogo{
+    color: #f00e0e;
+    font-size: 20px;;
+}
+.todo__title{
+    font-weight: 600;
+    text-align: center;
+    font-size: 20px;
+}
+.todo__description{
+    font-weight: 500;
+    font-size: 18px;
+    color: rgba(20,20,25, 0.9);
+    height: 100px;
+}
+.todo__data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    color: #575767;
+    padding: 0px 5px;
+}
+.todo__mark{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 12px;
+    color: grey;
+    margin-top: 10px;
+    margin-right: 5px;
+    gap: 5px;
 }
 </style>
